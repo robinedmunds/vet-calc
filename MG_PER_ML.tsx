@@ -1,16 +1,19 @@
-type AnimalKeys = "cat" | "dog" | "rabbit";
-type ProcedureKeys = "castrate" | "spay" | "dental";
-type DrugKeys =
+export type AnimalKeys = "cat" | "dog" | "rabbit";
+export type ProcedureKeys = "castrate" | "spay" | "dental";
+export type DrugKeys =
   | "buprenorphine"
   | "ketamine"
   | "medetomidine"
   | "meloxicam"
   | "methadone";
 
-type DrugDetail = { mgPerMl: number; mgPerKg: { low: number; high: number } };
-type Drugs = Record<Partial<DrugKeys>, DrugDetail>;
-type Procedures = Record<Partial<ProcedureKeys>, Drugs>;
-type Animals = Record<Partial<AnimalKeys>, Procedures>;
+export type DrugDetail = {
+  mgPerMl: number;
+  mgPerKg: { low: number; high: number };
+};
+export type Drugs = Record<Partial<DrugKeys>, DrugDetail>;
+export type Procedures = Record<Partial<ProcedureKeys>, Drugs>;
+export type Animals = Record<Partial<AnimalKeys>, Procedures>;
 
 export default {
   cat: {

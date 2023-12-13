@@ -2,37 +2,61 @@ import Head from "next/head";
 import Link from "next/link";
 import Layout from "./layout";
 import { useState } from "react";
-import ANIMALS from "../../MG_PER_ML";
-
-function calcDose(
-  weightKg: number,
-  animal: keyof typeof CONSTANTS,
-  procedure: keyof typeof CONSTANTS.dog,
-  drug: string,
-): number {
-  const op = ANIMALS;
-
-  return -1;
-}
+import ANIMALS, { AnimalKeys, ProcedureKeys, DrugKeys } from "../../MG_PER_ML";
 
 export default function Home() {
   const [kg, setKg] = useState<number>(5);
   const [tenthsKg, setTenthsKg] = useState<number>(400);
+  const [animal, setAnimal] = useState<AnimalKeys>("dog");
+  const [procedure, setProcedure] = useState<ProcedureKeys>("castrate");
 
+  function genDoses() {
+    const DRUGS = ANIMALS[animal][procedure];
+    const arr = [];
+
+    for (const [name, detail] of Object.entries(DRUGS)) {
+      const dose = ((kg + tenthsKg) * detail.mgPerKg.low) / detail.mgPerMl;
+      const roundedDose = Math.round(dose * 1000) / 1000;
+
+      arr.push(
+        <div className="card bg-base-300 text-primary-content w-full">
+          <div className="card-body items-center">
+            <h4 className="card-title">{name.toUpperCase()}</h4>
+            <div className="text-5xl">{roundedDose} ml</div>
+            <div className="text-lg">
+              <em>{detail.mgPerMl} mg/ml</em>
+            </div>
+          </div>
+        </div>,
+      );
+    }
+
+    return arr;
+  }
+
+  function genKgGradations() {
+    const arr = [];
+
+    for (let i = 0; i <= 64; i += 16) {
+      arr.push(
+        <span
+          key={i}
+          className="cursor-pointer"
+          onClick={(_) => {
+            setKg(i);
+          }}
+        >
+          {i}kg
+        </span>,
+      );
+    }
+
+    return arr;
+  }
   function genGramGradations() {
-    const arr = [
-      <span
-        key={0}
-        className="cursor-pointer"
-        onClick={(_) => {
-          setTenthsKg(0);
-        }}
-      >
-        {0}g
-      </span>,
-    ];
+    const arr = [];
 
-    for (let i = 100; i <= 900; i += 100) {
+    for (let i = 0; i <= 900; i += 100) {
       arr.push(
         <span
           key={i}
@@ -50,72 +74,50 @@ export default function Home() {
   }
 
   return (
-    <>
-      <Layout>
-        <main className="container flex flex-col items-center  gap-12 px-4 py-16 ">
-          <h2 className="text-5xl">Dog castrate</h2>
-          <h3>Set dog weight</h3>
-          <div className="text-5xl">
-            {kg + tenthsKg / 1000}
-            <span className="text-md">kg</span>
+    <Layout>
+      <main className="container flex flex-col items-center  gap-12 px-4 py-16 ">
+        <h2 className="text-5xl">Dog castrate</h2>
+        <h3>Set dog weight</h3>
+        <div className="text-5xl">
+          {kg + tenthsKg / 1000}
+          <span className="text-md">kg</span>
+        </div>
+        <div className="w-full">
+          <div className="flex w-full justify-between p-2 text-xs">
+            {genKgGradations()}
           </div>
-          <div className="w-full">
-            <div className="flex w-full justify-between p-2 text-xs">
-              <span
-                className="cursor-pointer"
-                onClick={(_) => {
-                  setKg(0);
-                }}
-              >
-                0kg
-              </span>
-              <span
-                className="cursor-pointer"
-                onClick={(_) => {
-                  setKg(32);
-                }}
-              >
-                32kg
-              </span>
-              <span
-                className="cursor-pointer"
-                onClick={(_) => {
-                  setKg(64);
-                }}
-              >
-                64kg
-              </span>
-            </div>
-            <input
-              type="range"
-              min={0}
-              max="64"
-              value={kg}
-              className="range"
-              onChange={(e) => {
-                setKg(+e.target.value);
-              }}
-            />
+          <input
+            type="range"
+            min={0}
+            max="64"
+            value={kg}
+            className="range"
+            onChange={(e) => {
+              setKg(+e.target.value);
+            }}
+          />
+        </div>
+        <div className="w-full">
+          <div className="flex w-full justify-between p-2 text-xs">
+            {genGramGradations()}
           </div>
-          <div></div>
-          <div className="w-full">
-            <div className="flex w-full justify-between p-2 text-xs">
-              {genGramGradations()}
-            </div>
-            <input
-              type="range"
-              min={0}
-              max="9"
-              value={tenthsKg / 100}
-              className="range "
-              step="1"
-              onChange={(e) => {
-                setTenthsKg(+e.target.value * 100);
-              }}
-            />
-          </div>
-        </main>
-      </Layout>
-    </>
+          <input
+            type="range"
+            min={0}
+            max="9"
+            value={tenthsKg / 100}
+            className="range "
+            step="1"
+            onChange={(e) => {
+              setTenthsKg(+e.target.value * 100);
+            }}
+          />
+        </div>
+        {genDoses()}
+        <div className="text-secondary-content">
+          ml = (weight × mg per kg) ÷ mg per ml
+        </div>
+      </main>
+    </Layout>
   );
 }
