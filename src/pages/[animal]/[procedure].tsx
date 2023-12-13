@@ -1,25 +1,33 @@
+import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import Layout from "./layout";
-import { useState } from "react";
-import ANIMALS, { AnimalKeys, ProcedureKeys, DrugKeys } from "../../MG_PER_ML";
+import { useRouter } from "next/router";
+import Layout from "../layout";
+import type { AnimalKeys, ProcedureKeys, DrugKeys } from "../../MG_PER_ML";
+import ANIMALS from "../../MG_PER_ML";
 
-export default function Home() {
+export default function DrugCalc() {
+  const router = useRouter();
+  const qryAnimal: AnimalKeys = router.query.animal as AnimalKeys;
+  const qryProcedure: ProcedureKeys = router.query.procedure as ProcedureKeys;
+
   const [kg, setKg] = useState<number>(5);
   const [tenthsKg, setTenthsKg] = useState<number>(400);
-  const [animal, setAnimal] = useState<AnimalKeys>("dog");
-  const [procedure, setProcedure] = useState<ProcedureKeys>("castrate");
+  const [animal, setAnimal] = useState<AnimalKeys>(qryAnimal);
+  const [procedure, setProcedure] = useState<ProcedureKeys>(qryProcedure);
 
   function genDoses() {
     const DRUGS = ANIMALS[animal][procedure];
     const arr = [];
-
     for (const [name, detail] of Object.entries(DRUGS)) {
       const dose = ((kg + tenthsKg) * detail.mgPerKg.low) / detail.mgPerMl;
       const roundedDose = Math.round(dose * 1000) / 1000;
 
       arr.push(
-        <div className="card bg-base-300 text-primary-content w-full">
+        <div
+          key={name}
+          className="card bg-base-300 text-primary-content w-full"
+        >
           <div className="card-body items-center">
             <h4 className="card-title">{name.toUpperCase()}</h4>
             <div className="text-5xl">{roundedDose} ml</div>
@@ -76,7 +84,9 @@ export default function Home() {
   return (
     <Layout>
       <main className="container flex flex-col items-center  gap-12 px-4 py-16 ">
-        <h2 className="text-5xl">Dog castrate</h2>
+        <h2 className="text-5xl">
+          {animal} {procedure}
+        </h2>
         <h3>Set dog weight</h3>
         <div className="text-5xl">
           {kg + tenthsKg / 1000}

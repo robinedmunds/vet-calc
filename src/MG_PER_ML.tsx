@@ -1,12 +1,16 @@
-export type AnimalKeys = "cat" | "dog" | "rabbit";
-export type ProcedureKeys = "castrate" | "spay" | "dental";
-export type DrugKeys =
-  | "buprenorphine"
-  | "ketamine"
-  | "medetomidine"
-  | "meloxicam"
-  | "methadone";
+export const ANIMALS = ["cat", "dog", "rabbit"] as const;
+export const PROCEDURES = ["castration", "spay", "dental"] as const;
+export const DRUGS = [
+  "buprenorphine",
+  "ketamine",
+  "medetomidine",
+  "meloxicam",
+  "methadone",
+] as const;
 
+export type AnimalKeys = (typeof ANIMALS)[number];
+export type ProcedureKeys = (typeof PROCEDURES)[number];
+export type DrugKeys = (typeof DRUGS)[number];
 export type DrugDetail = {
   mgPerMl: number;
   mgPerKg: { low: number; high: number };
@@ -17,7 +21,7 @@ export type Animals = Record<Partial<AnimalKeys>, Procedures>;
 
 export default {
   cat: {
-    castrate: {
+    castration: {
       medetomidine: { mgPerMl: 1, mgPerKg: { low: 0.005, high: 0.01 } },
       buprenorphine: { mgPerMl: 0.3, mgPerKg: { low: 0.02, high: 0.02 } },
       meloxicam: { mgPerMl: 2, mgPerKg: { low: 0.2, high: 0.2 } },
@@ -34,7 +38,7 @@ export default {
     },
   },
   dog: {
-    castrate: {
+    castration: {
       medetomidine: { mgPerMl: 1, mgPerKg: { low: 0.005, high: 0.01 } },
       methadone: { mgPerMl: 10, mgPerKg: { low: 0.3, high: 0.5 } },
       meloxicam: { mgPerMl: 5, mgPerKg: { low: 0.2, high: 0.2 } },
@@ -51,7 +55,7 @@ export default {
     },
   },
   rabbit: {
-    castrate: {
+    castration: {
       medetomidine: { mgPerMl: 1, mgPerKg: { low: 0.25, high: 0.25 } },
       buprenorphine: { mgPerMl: 0.3, mgPerKg: { low: 0.05, high: 0.05 } },
       ketamine: { mgPerMl: 100, mgPerKg: { low: 15, high: 15 } },

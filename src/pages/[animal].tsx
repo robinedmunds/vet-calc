@@ -1,17 +1,29 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import Layout from "./layout";
+import type { AnimalKeys, Procedures } from "../MG_PER_ML";
 import SOURCE from "../MG_PER_ML";
 
-export default function Home() {
+export default function AnimalSelect() {
+  const router = useRouter();
+  const animal: AnimalKeys = router.query.animal as AnimalKeys;
+
   function genAnimalBtns() {
     const arr = [];
+    const procedures: Procedures = SOURCE[animal];
 
-    for (const animal of Object.keys(SOURCE)) {
+    for (const procedure of Object.keys(procedures)) {
       arr.push(
-        <Link href={{ pathname: "/[animal]", query: { animal } }} key={animal}>
+        <Link
+          href={{
+            pathname: "/[animal]/[procedure]",
+            query: { animal, procedure },
+          }}
+          key={procedure}
+        >
           <div className="btn btn-neutral h-48 w-48 rounded-3xl text-5xl">
-            {animal}
+            {procedure}
           </div>
         </Link>,
       );
