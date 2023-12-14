@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import Layout from "../layout";
@@ -28,15 +28,11 @@ export const getStaticProps = (async (_) => {
 
 export default function DrugCalc() {
   const router = useRouter();
+  const animal = router.query.animal as AnimalKeys;
+  const procedure = router.query.procedure as ProcedureKeys;
   const [kg, setKg] = useState<number>(2);
   const [grams, setGrams] = useState<number>(0);
-  const [animal, setAnimal] = useState<AnimalKeys>(
-    router.query.animal as AnimalKeys,
-  );
-  const [procedure, setProcedure] = useState<ProcedureKeys>(
-    router.query.procedure as ProcedureKeys,
-  );
-  const [highlight, setHighlight] = useState<DrugKeys | undefined>(undefined);
+  const [highlight, setHighlight] = useState<string | undefined>(undefined);
 
   function genDoses() {
     if (!animal || !procedure) return;
@@ -44,12 +40,12 @@ export default function DrugCalc() {
     const DRUGS = ANIMALS[animal][procedure];
     const arr = [];
     for (const [name, detail] of Object.entries(DRUGS)) {
-      const weightKg = kg + grams / 1000;
+      const twoDoses = detail.mgPerKg.low !== detail.mgPerKg.high;
       const roundedDose = calcDose({
-        weightKg,
+        weightKg: kg + grams / 1000,
         mgPerMl: detail.mgPerMl,
         mgPerKg: detail.mgPerKg.low,
-        decimalPlaces: 4,
+        decimalPlaces: 5,
       });
 
       arr.push(
@@ -63,11 +59,42 @@ export default function DrugCalc() {
           }
         >
           <div className="card-body items-center">
-            <h4 className="card-title">{name.toUpperCase()}</h4>
+            <h4 className="card-title">
+              {name.toUpperCase()}
+              {twoDoses ? " (Low dose)" : undefined}
+            </h4>
+            <em className="text-lg">{detail.mgPerMl} mg/ml</em>
             <div className="text-5xl">{roundedDose} ml</div>
-            <div className="text-lg">
-              <em>{detail.mgPerMl} mg/ml</em>
-            </div>
+            <em className="text-lg">{detail.mgPerKg.low} mg/kg</em>
+          </div>
+        </div>,
+      );
+
+      if (!twoDoses) continue;
+
+      const highDose = calcDose({
+        weightKg: kg + grams / 1000,
+        mgPerMl: detail.mgPerMl,
+        mgPerKg: detail.mgPerKg.high,
+        decimalPlaces: 5,
+      });
+
+      const highKey = name.concat("-high");
+      arr.push(
+        <div
+          key={highKey}
+          className={"card bg-base-200 text-primary-content w-full border-8".concat(
+            highlight === highKey ? " border-secondary" : " border-base-200",
+          )}
+          onClick={(_) =>
+            setHighlight(highlight !== highKey ? highKey : undefined)
+          }
+        >
+          <div className="card-body items-center">
+            <h4 className="card-title">{name.toUpperCase()} (High dose)</h4>
+            <em className="text-lg">{detail.mgPerMl} mg/ml</em>
+            <div className="text-5xl">{highDose} ml</div>
+            <em className="text-lg">{detail.mgPerKg.high} mg/kg</em>
           </div>
         </div>,
       );
