@@ -1,9 +1,29 @@
 import { useState, useEffect } from "react";
+import type { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import Layout from "../layout";
 import type { AnimalKeys, ProcedureKeys, DrugKeys } from "../../MG_PER_ML";
 import ANIMALS, { WEIGHT_SLIDERS } from "../../MG_PER_ML";
 import capitalise from "../../util/capitalise";
+
+export const getStaticPaths = (async () => {
+  const paths = [];
+
+  for (const animal of Object.keys(ANIMALS)) {
+    for (const procedure of Object.keys(ANIMALS[animal as AnimalKeys])) {
+      paths.push({ params: { animal, procedure } });
+    }
+  }
+
+  return {
+    paths,
+    fallback: false, // 404 non-existing
+  };
+}) satisfies GetStaticPaths;
+
+export const getStaticProps = (async (_) => {
+  return { props: {} };
+}) satisfies GetStaticProps<object>;
 
 export default function DrugCalc() {
   const router = useRouter();

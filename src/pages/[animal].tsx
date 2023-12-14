@@ -1,9 +1,27 @@
+import type { GetStaticProps, GetStaticPaths } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Layout from "./layout";
 import type { AnimalKeys, Procedures } from "../MG_PER_ML";
-import SOURCE from "../MG_PER_ML";
+import ANIMALS from "../MG_PER_ML";
 import capitalise from "../util/capitalise";
+
+export const getStaticPaths = (async () => {
+  const paths = [];
+
+  for (const animal of Object.keys(ANIMALS)) {
+    paths.push({ params: { animal } });
+  }
+
+  return {
+    paths,
+    fallback: false, // 404 non-existing
+  };
+}) satisfies GetStaticPaths;
+
+export const getStaticProps = (async (_) => {
+  return { props: {} };
+}) satisfies GetStaticProps<object>;
 
 export default function ProcedureSelect() {
   const router = useRouter();
@@ -13,7 +31,7 @@ export default function ProcedureSelect() {
     if (!animal) return;
 
     const arr = [];
-    const procedures: Procedures = SOURCE[animal];
+    const procedures: Procedures = ANIMALS[animal];
 
     for (const procedure of Object.keys(procedures)) {
       arr.push(
