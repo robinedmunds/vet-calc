@@ -6,6 +6,8 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const year = new Date().getUTCFullYear();
+
   return (
     <>
       <Head>
@@ -19,7 +21,7 @@ export default function DashboardLayout({
       </Head>
 
       <div className="container mx-auto p-2">
-        <div className="navbar bg-primary text-primary-content rounded-3xl">
+        <div className="navbar bg-secondary text-primary-content rounded-3xl">
           <Link href="/">
             <button className="btn btn-ghost text-xl">
               <h1 className="">Hayley's Veterinary Drug Calculator</h1>
@@ -29,6 +31,20 @@ export default function DashboardLayout({
 
         {children}
       </div>
+      <footer className="footer footer-center bg-base-300 text-base-content p-4">
+        <aside>
+          <p>
+            Copyright © {year} -{" "}
+            <a
+              className="link"
+              href="https://github.com/robinedmunds/"
+              target="_blank"
+            >
+              Robin Edmunds
+            </a>
+          </p>
+        </aside>
+      </footer>
     </>
   );
 }

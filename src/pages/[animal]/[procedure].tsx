@@ -1,22 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Layout from "../layout";
 import type { AnimalKeys, ProcedureKeys, DrugKeys } from "../../MG_PER_ML";
 import ANIMALS from "../../MG_PER_ML";
+import capitalise from "../../util/capitalise";
 
 export default function DrugCalc() {
   const router = useRouter();
-  const qryAnimal: AnimalKeys = router.query.animal as AnimalKeys;
-  const qryProcedure: ProcedureKeys = router.query.procedure as ProcedureKeys;
-
   const [kg, setKg] = useState<number>(5);
   const [tenthsKg, setTenthsKg] = useState<number>(400);
-  const [animal, setAnimal] = useState<AnimalKeys>(qryAnimal);
-  const [procedure, setProcedure] = useState<ProcedureKeys>(qryProcedure);
+  const [animal, setAnimal] = useState<AnimalKeys>(
+    router.query.animal as AnimalKeys,
+  );
+  const [procedure, setProcedure] = useState<ProcedureKeys>(
+    router.query.procedure as ProcedureKeys,
+  );
 
   function genDoses() {
+    if (!animal || !procedure) return;
+
     const DRUGS = ANIMALS[animal][procedure];
     const arr = [];
     for (const [name, detail] of Object.entries(DRUGS)) {
@@ -81,13 +85,17 @@ export default function DrugCalc() {
     return arr;
   }
 
+  useEffect(() => {
+    // fixes animal/procedure undefined on direct nav
+    setAnimal(router.query.animal as AnimalKeys);
+    setProcedure(router.query.procedure as ProcedureKeys);
+  }, [router.query.animal, router.query.procedure]);
+
   return (
     <Layout>
       <main className="container flex flex-col items-center  gap-12 px-4 py-16 ">
-        <h2 className="text-5xl">
-          {animal} {procedure}
-        </h2>
-        <h3>Set dog weight</h3>
+        <h2 className="text-5xl">{capitalise(`${animal} ${procedure}`)}</h2>
+        <h3>Set {animal}'s weight</h3>
         <div className="text-5xl">
           {kg + tenthsKg / 1000}
           <span className="text-md">kg</span>
