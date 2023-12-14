@@ -1,9 +1,23 @@
 import Link from "next/link";
+import { hasCookie, setCookie } from "cookies-next";
 import Layout from "./layout";
 import SOURCE from "../MG_PER_ML";
 import capitalise from "../util/capitalise";
 
 export default function Home() {
+  if (!hasCookie("experimental")) {
+    if (typeof document !== "undefined") {
+      const elem = document.getElementById(
+        "experimental-modal",
+      ) as HTMLDialogElement;
+      elem.showModal();
+    }
+  }
+
+  function warningAccept() {
+    setCookie("experimental", "accepted", { maxAge: 1209600 });
+  }
+
   function genBtns() {
     const arr = [];
 
@@ -26,6 +40,22 @@ export default function Home() {
         <h2 className="text-3xl">Pick an animal</h2>
         <div className="flex flex-wrap justify-around gap-12">{genBtns()}</div>
       </main>
+
+      <dialog id="experimental-modal" className="modal">
+        <div className="modal-box border-warning border-8">
+          <h3 className="text-lg font-bold">DISCLAIMER</h3>
+          <p className="py-4">
+            This is experimental software. DO NOT use it for any purpose!
+          </p>
+          <div className="modal-action">
+            <form method="dialog">
+              <button className="btn" onClick={warningAccept}>
+                I understand
+              </button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </Layout>
   );
 }
