@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Layout from "../layout";
 import type { AnimalKeys, ProcedureKeys, DrugKeys } from "../../MG_PER_ML";
-import ANIMALS from "../../MG_PER_ML";
+import ANIMALS, { WEIGHT_SLIDERS } from "../../MG_PER_ML";
 import capitalise from "../../util/capitalise";
 
 export default function DrugCalc() {
   const router = useRouter();
-  const [kg, setKg] = useState<number>(5);
-  const [tenthsKg, setTenthsKg] = useState<number>(400);
+  const [kg, setKg] = useState<number>(2);
+  const [tenthsKg, setTenthsKg] = useState<number>(0);
   const [animal, setAnimal] = useState<AnimalKeys>(
     router.query.animal as AnimalKeys,
   );
@@ -50,43 +50,64 @@ export default function DrugCalc() {
     return arr;
   }
 
-  function genKgGradations() {
+  function genGradations(
+    max: number,
+    suffix: string,
+    setFunc: (n: number) => void,
+    labelGap: number,
+  ) {
     const arr = [];
 
-    for (let i = 0; i <= 64; i += 16) {
+    for (let i = 0; i <= max; i += max / labelGap) {
       arr.push(
         <span
           key={i}
           className="cursor-pointer"
           onClick={(_) => {
-            setKg(i);
+            setFunc(i);
           }}
         >
-          {i}kg
+          {i}
+          {suffix}
         </span>,
       );
     }
 
     return arr;
   }
-  function genGramGradations() {
-    const arr = [];
 
-    for (let i = 0; i <= 900; i += 100) {
-      arr.push(
-        <span
-          key={i}
-          className="cursor-pointer"
-          onClick={(_) => {
-            setTenthsKg(i);
+  function genSlider({
+    max,
+    suffix,
+    multiplier,
+    setFunc,
+    value,
+    labelGap,
+  }: {
+    max: number;
+    suffix: string;
+    multiplier: number;
+    setFunc: (n: number) => void;
+    value: number;
+    labelGap: number;
+  }) {
+    return (
+      <div className="w-full">
+        <div className="flex w-full justify-between p-2 text-xs">
+          {genGradations(max, suffix, setFunc, labelGap)}
+        </div>
+        <input
+          type="range"
+          min={0}
+          max={max / multiplier}
+          value={value / multiplier}
+          className="range"
+          onChange={(e) => {
+            setFunc(+e.target.value * multiplier);
           }}
-        >
-          {i}g
-        </span>,
-      );
-    }
-
-    return arr;
+        />
+      </div>
+    );
   }
 
   useEffect(() => {
@@ -104,37 +125,20 @@ export default function DrugCalc() {
           {kg + tenthsKg / 1000}
           <span className="text-xl">kg</span>
         </div>
-        <div className="w-full">
-          <div className="flex w-full justify-between p-2 text-xs">
-            {genKgGradations()}
-          </div>
-          <input
-            type="range"
-            min={0}
-            max="64"
-            value={kg}
-            className="range"
-            onChange={(e) => {
-              setKg(+e.target.value);
-            }}
-          />
-        </div>
-        <div className="w-full">
-          <div className="flex w-full justify-between p-2 text-xs">
-            {genGramGradations()}
-          </div>
-          <input
-            type="range"
-            min={0}
-            max="9"
-            value={tenthsKg / 100}
-            className="range "
-            step="1"
-            onChange={(e) => {
-              setTenthsKg(+e.target.value * 100);
-            }}
-          />
-        </div>
+        {genSlider({
+          ...WEIGHT_SLIDERS[animal].kg,
+          setFunc: setKg,
+          value: kg,
+          suffix: "kg",
+        })}
+
+        {genSlider({
+          ...WEIGHT_SLIDERS[animal].g,
+          setFunc: setTenthsKg,
+          value: tenthsKg,
+          suffix: "g",
+        })}
+
         {genDoses()}
         <div className="text-secondary-content">
           ml = (weight × mg per kg) ÷ mg per ml

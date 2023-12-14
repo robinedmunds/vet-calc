@@ -75,3 +75,42 @@ export default {
     },
   },
 } as Animals;
+
+export const WEIGHT_SLIDERS = {
+  cat: {
+    kg: {
+      max: 8,
+      multiplier: 1,
+      labelGap: 4,
+    },
+    g: {
+      max: 900,
+      multiplier: 100,
+      labelGap: 9,
+    },
+  },
+  dog: {
+    kg: {
+      max: 48,
+      multiplier: 1,
+      labelGap: 4,
+    },
+    g: {
+      max: 900,
+      multiplier: 100,
+      labelGap: 9,
+    },
+  },
+  rabbit: {
+    kg: {
+      max: 4,
+      multiplier: 1,
+      labelGap: 4,
+    },
+    g: {
+      max: 900,
+      multiplier: 100,
+      labelGap: 9,
+    },
+  },
+};
