@@ -5,6 +5,7 @@ import Layout from "../layout";
 import type { AnimalKeys, ProcedureKeys, DrugKeys } from "../../MG_PER_ML";
 import ANIMALS, { WEIGHT_SLIDERS } from "../../MG_PER_ML";
 import capitalise from "../../util/capitalise";
+import calcDose from "../../business/calcDose";
 
 export const getStaticPaths = (async () => {
   const paths = [];
@@ -28,7 +29,7 @@ export const getStaticProps = (async (_) => {
 export default function DrugCalc() {
   const router = useRouter();
   const [kg, setKg] = useState<number>(2);
-  const [tenthsKg, setTenthsKg] = useState<number>(0);
+  const [grams, setGrams] = useState<number>(0);
   const [animal, setAnimal] = useState<AnimalKeys>(
     router.query.animal as AnimalKeys,
   );
@@ -37,14 +38,21 @@ export default function DrugCalc() {
   );
   const [highlight, setHighlight] = useState<DrugKeys | undefined>(undefined);
 
+  console.log({ kg, grams });
+
   function genDoses() {
     if (!animal || !procedure) return;
 
     const DRUGS = ANIMALS[animal][procedure];
     const arr = [];
     for (const [name, detail] of Object.entries(DRUGS)) {
-      const dose = ((kg + tenthsKg) * detail.mgPerKg.low) / detail.mgPerMl;
-      const roundedDose = Math.round(dose * 1000) / 1000;
+      const weightKg = kg + grams / 1000;
+      const roundedDose = calcDose({
+        weightKg,
+        mgPerMl: detail.mgPerMl,
+        mgPerKg: detail.mgPerKg.low,
+        decimalPlaces: 4,
+      });
 
       arr.push(
         <div
@@ -142,7 +150,7 @@ export default function DrugCalc() {
         <h2 className="text-5xl">{capitalise(`${animal} ${procedure}`)}</h2>
         {/* <h3>Set {animal}'s weight</h3> */}
         <div className="text-8xl">
-          {kg + tenthsKg / 1000}
+          {kg + grams / 1000}
           <span className="text-xl">kg</span>
         </div>
         {genSlider({
@@ -154,8 +162,8 @@ export default function DrugCalc() {
 
         {genSlider({
           ...WEIGHT_SLIDERS[animal].g,
-          setFunc: setTenthsKg,
-          value: tenthsKg,
+          setFunc: setGrams,
+          value: grams,
           suffix: "g",
         })}
 
