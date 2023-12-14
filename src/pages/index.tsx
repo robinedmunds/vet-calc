@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Link from "next/link";
 import Layout from "./layout";
 import SOURCE from "../MG_PER_ML";

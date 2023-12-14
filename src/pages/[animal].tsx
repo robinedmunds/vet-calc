@@ -1,7 +1,5 @@
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import Layout from "./layout";
 import type { AnimalKeys, Procedures } from "../MG_PER_ML";
 import SOURCE from "../MG_PER_ML";

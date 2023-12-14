@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import Layout from "../layout";
 import type { AnimalKeys, ProcedureKeys, DrugKeys } from "../../MG_PER_ML";
@@ -17,6 +15,7 @@ export default function DrugCalc() {
   const [procedure, setProcedure] = useState<ProcedureKeys>(
     router.query.procedure as ProcedureKeys,
   );
+  const [highlight, setHighlight] = useState<DrugKeys | undefined>(undefined);
 
   function genDoses() {
     if (!animal || !procedure) return;
@@ -30,7 +29,12 @@ export default function DrugCalc() {
       arr.push(
         <div
           key={name}
-          className="card bg-base-300 text-primary-content w-full"
+          className={"card bg-base-200 text-primary-content w-full border-8".concat(
+            highlight === name ? " border-secondary" : " border-base-200",
+          )}
+          onClick={(_) =>
+            setHighlight(highlight !== name ? (name as DrugKeys) : undefined)
+          }
         >
           <div className="card-body items-center">
             <h4 className="card-title">{name.toUpperCase()}</h4>
@@ -95,10 +99,10 @@ export default function DrugCalc() {
     <Layout>
       <main className="container flex flex-col items-center  gap-12 px-4 py-16 ">
         <h2 className="text-5xl">{capitalise(`${animal} ${procedure}`)}</h2>
-        <h3>Set {animal}'s weight</h3>
-        <div className="text-5xl">
+        {/* <h3>Set {animal}'s weight</h3> */}
+        <div className="text-8xl">
           {kg + tenthsKg / 1000}
-          <span className="text-md">kg</span>
+          <span className="text-xl">kg</span>
         </div>
         <div className="w-full">
           <div className="flex w-full justify-between p-2 text-xs">

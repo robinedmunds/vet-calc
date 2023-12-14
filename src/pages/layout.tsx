@@ -17,7 +17,6 @@ export default function DashboardLayout({
           content="Hayley's Veterinary Drug Calculator"
         />
         <link rel="icon" href="/favicon.ico" />
-        <html data-theme="nord" />
       </Head>
 
       <div className="container mx-auto p-2">
