@@ -38,8 +38,6 @@ export default function DrugCalc() {
   );
   const [highlight, setHighlight] = useState<DrugKeys | undefined>(undefined);
 
-  console.log({ kg, grams });
-
   function genDoses() {
     if (!animal || !procedure) return;
 
@@ -169,7 +167,7 @@ export default function DrugCalc() {
 
         {genDoses()}
         <div className="text-secondary-content">
-          ml = (weight × mg per kg) ÷ mg per ml
+          ml = (1 ÷ mg/ml) × mg/kg × kg
         </div>
       </main>
     </Layout>
