@@ -7,7 +7,7 @@ export default {
     extend: {
       fontFamily: {
         // sans: ["var(--font-sans)", ...fontFamily.sans],
-        sans: ["Quicksand"],
+        sans: ["Quicksand", ...fontFamily.sans],
       },
     },
   },
