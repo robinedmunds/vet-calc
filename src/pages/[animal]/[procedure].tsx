@@ -136,12 +136,6 @@ export default function DrugCalc() {
     );
   }
 
-  useEffect(() => {
-    // fixes animal/procedure undefined on direct nav
-    setAnimal(router.query.animal as AnimalKeys);
-    setProcedure(router.query.procedure as ProcedureKeys);
-  }, [router.query.animal, router.query.procedure]);
-
   return (
     <Layout>
       <main className="container flex flex-col items-center  gap-12 px-4 py-16 ">
