@@ -67,11 +67,14 @@ export default function DrugCalc() {
               ) : undefined}
             </h4>
             <em className="text-base-content/60 text-lg">
-              {detail.mgPerMl} mg/ml
-            </em>
-            <div className="text-5xl">{roundedDose} ml</div>
-            <em className="text-base-content/60 text-lg">
               {detail.mgPerKg.low} mg/kg
+            </em>
+            <div className="text-6xl">
+              {roundedDose}
+              <span className="text-3xl">ml</span>
+            </div>
+            <em className="text-base-content/60 text-lg">
+              {detail.mgPerMl} mg/ml
             </em>
           </div>
         </div>,
@@ -102,11 +105,14 @@ export default function DrugCalc() {
               <span className="text-error"> (High dose)</span>
             </h4>
             <em className="text-base-content/60 text-lg">
-              {detail.mgPerMl} mg/ml
-            </em>
-            <div className="text-5xl">{highDose} ml</div>
-            <em className="text-base-content/60 text-lg">
               {detail.mgPerKg.high} mg/kg
+            </em>
+            <div className="text-6xl">
+              {highDose}
+              <span className="text-3xl">ml</span>
+            </div>
+            <em className="text-base-content/60 text-lg">
+              {detail.mgPerMl} mg/ml
             </em>
           </div>
         </div>,
