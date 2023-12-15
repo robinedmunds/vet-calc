@@ -42,7 +42,7 @@ export default function ProcedureSelect() {
           }}
           key={procedure}
         >
-          <div className="btn btn-neutral h-48 rounded-3xl px-12 text-5xl">
+          <div className="btn btn-neutral h-40 rounded-2xl px-12 text-5xl">
             {capitalise(procedure)}
           </div>
         </Link>,

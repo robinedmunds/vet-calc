@@ -33,6 +33,7 @@ export default function DrugCalc() {
   const [kg, setKg] = useState<number>(2);
   const [grams, setGrams] = useState<number>(0);
   const [highlight, setHighlight] = useState<string | undefined>(undefined);
+  const weightKg = kg + grams / 1000;
 
   function genDoses() {
     if (!animal || !procedure) return;
@@ -42,7 +43,7 @@ export default function DrugCalc() {
     for (const [name, detail] of Object.entries(DRUGS)) {
       const twoDoses = detail.mgPerKg.low !== detail.mgPerKg.high;
       const roundedDose = calcDose({
-        weightKg: kg + grams / 1000,
+        weightKg,
         mgPerMl: detail.mgPerMl,
         mgPerKg: detail.mgPerKg.low,
         decimalPlaces: 5,
@@ -51,7 +52,7 @@ export default function DrugCalc() {
       arr.push(
         <div
           key={name}
-          className={"card bg-base-200 text-primary-content w-full border-8".concat(
+          className={"card bg-base-200 w-full border-8".concat(
             highlight === name ? " border-secondary" : " border-base-200",
           )}
           onClick={(_) =>
@@ -59,13 +60,19 @@ export default function DrugCalc() {
           }
         >
           <div className="card-body items-center">
-            <h4 className="card-title">
+            <h4 className="card-title font-black">
               {name.toUpperCase()}
-              {twoDoses ? " (Low dose)" : undefined}
+              {twoDoses ? (
+                <span className="text-success"> (Low dose)</span>
+              ) : undefined}
             </h4>
-            <em className="text-lg">{detail.mgPerMl} mg/ml</em>
+            <em className="text-base-content/60 text-lg">
+              {detail.mgPerMl} mg/ml
+            </em>
             <div className="text-5xl">{roundedDose} ml</div>
-            <em className="text-lg">{detail.mgPerKg.low} mg/kg</em>
+            <em className="text-base-content/60 text-lg">
+              {detail.mgPerKg.low} mg/kg
+            </em>
           </div>
         </div>,
       );
@@ -73,17 +80,16 @@ export default function DrugCalc() {
       if (!twoDoses) continue;
 
       const highDose = calcDose({
-        weightKg: kg + grams / 1000,
+        weightKg,
         mgPerMl: detail.mgPerMl,
         mgPerKg: detail.mgPerKg.high,
         decimalPlaces: 5,
       });
-
       const highKey = name.concat("-high");
       arr.push(
         <div
           key={highKey}
-          className={"card bg-base-200 text-primary-content w-full border-8".concat(
+          className={"card bg-base-200  w-full border-8".concat(
             highlight === highKey ? " border-secondary" : " border-base-200",
           )}
           onClick={(_) =>
@@ -91,10 +97,17 @@ export default function DrugCalc() {
           }
         >
           <div className="card-body items-center">
-            <h4 className="card-title">{name.toUpperCase()} (High dose)</h4>
-            <em className="text-lg">{detail.mgPerMl} mg/ml</em>
+            <h4 className="card-title font-black">
+              {name.toUpperCase()}
+              <span className="text-error"> (High dose)</span>
+            </h4>
+            <em className="text-base-content/60 text-lg">
+              {detail.mgPerMl} mg/ml
+            </em>
             <div className="text-5xl">{highDose} ml</div>
-            <em className="text-lg">{detail.mgPerKg.high} mg/kg</em>
+            <em className="text-base-content/60 text-lg">
+              {detail.mgPerKg.high} mg/kg
+            </em>
           </div>
         </div>,
       );
@@ -165,12 +178,11 @@ export default function DrugCalc() {
 
   return (
     <Layout>
-      <main className="container flex flex-col items-center  gap-12 px-4 py-16 ">
-        <h2 className="text-5xl">{capitalise(`${animal} ${procedure}`)}</h2>
-        {/* <h3>Set {animal}'s weight</h3> */}
-        <div className="text-8xl">
-          {kg + grams / 1000}
-          <span className="text-xl">kg</span>
+      <main className="container flex flex-col items-center gap-12 px-4 py-16">
+        <h2 className="text-3xl">{capitalise(`${animal} ${procedure}`)}</h2>
+        <div className="text-9xl">
+          {weightKg}
+          <span className="text-3xl">kg</span>
         </div>
         {genSlider({
           ...WEIGHT_SLIDERS[animal].kg,
@@ -187,9 +199,7 @@ export default function DrugCalc() {
         })}
 
         {genDoses()}
-        <div className="text-secondary-content">
-          ml = (1 ÷ mg/ml) × mg/kg × kg
-        </div>
+        <div className="text-lg">ml = (1 ÷ mg/ml) × mg/kg × kg</div>
       </main>
     </Layout>
   );
