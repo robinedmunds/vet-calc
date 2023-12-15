@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { GetStaticProps, GetStaticPaths } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import Layout from "../_layout";
 import type { AnimalKeys, ProcedureKeys, DrugKeys } from "../../business/SSOT";
@@ -185,7 +186,9 @@ export default function DrugCalc() {
   return (
     <Layout>
       <main className="container flex flex-col items-center gap-12 px-4 py-16">
-        <h2 className="text-3xl">{capitalise(`${animal} ${procedure}`)}</h2>
+        <h2 className="text-3xl">
+          {capitalise(animal)} {procedure}
+        </h2>
         <div className="text-9xl">
           {weightKg}
           <span className="text-3xl">kg</span>
@@ -205,7 +208,7 @@ export default function DrugCalc() {
         })}
 
         {genDoses()}
-        <div className="text-lg">ml = (1 ÷ mg/ml) × mg/kg × kg</div>
+        <div className="pt-4 text-xl">ml = ( 1 ÷ mg/ml ) × mg/kg × kg</div>
       </main>
     </Layout>
   );
