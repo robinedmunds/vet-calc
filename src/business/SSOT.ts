@@ -89,7 +89,7 @@ export const WEIGHT_SLIDERS = {
     g: {
       max: 990,
       multiplier: 10,
-      labelGap: 6,
+      labelGap: 3,
     },
   },
   dog: {
@@ -101,7 +101,7 @@ export const WEIGHT_SLIDERS = {
     g: {
       max: 990,
       multiplier: 10,
-      labelGap: 6,
+      labelGap: 3,
     },
   },
   rabbit: {
@@ -113,7 +113,7 @@ export const WEIGHT_SLIDERS = {
     g: {
       max: 990,
       multiplier: 10,
-      labelGap: 6,
+      labelGap: 3,
     },
   },
 };
