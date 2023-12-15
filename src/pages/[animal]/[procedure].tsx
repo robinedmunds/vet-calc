@@ -34,7 +34,7 @@ export default function DrugCalc() {
   const [kg, setKg] = useState<number>(2);
   const [grams, setGrams] = useState<number>(0);
   const [highlight, setHighlight] = useState<string | undefined>(undefined);
-  const weightKg = kg + grams / 1000;
+  const weightKg = Math.round((kg + grams / 1000) * 100) / 100;
 
   function genDoses() {
     if (!animal || !procedure) return;

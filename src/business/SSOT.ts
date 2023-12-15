@@ -94,7 +94,7 @@ export const WEIGHT_SLIDERS = {
   },
   dog: {
     kg: {
-      max: 48,
+      max: 64,
       multiplier: 1,
       labelGap: 4,
     },
@@ -111,9 +111,9 @@ export const WEIGHT_SLIDERS = {
       labelGap: 4,
     },
     g: {
-      max: 900,
-      multiplier: 100,
-      labelGap: 9,
+      max: 990,
+      multiplier: 10,
+      labelGap: 6,
     },
   },
 };
