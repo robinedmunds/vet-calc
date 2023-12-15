@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { hasCookie, setCookie } from "cookies-next";
 import Layout from "./layout";
-import SOURCE from "../MG_PER_ML";
+import SSOT from "../business/SSOT";
 import capitalise from "../util/capitalise";
 
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
   function genBtns() {
     const arr = [];
 
-    for (const animal of Object.keys(SOURCE)) {
+    for (const animal of Object.keys(SSOT)) {
       arr.push(
         <Link href={{ pathname: "/[animal]", query: { animal } }} key={animal}>
           <div className="btn btn-neutral h-40 rounded-2xl px-12 text-5xl">

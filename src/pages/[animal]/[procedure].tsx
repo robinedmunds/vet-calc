@@ -2,16 +2,16 @@ import { useState } from "react";
 import type { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import Layout from "../layout";
-import type { AnimalKeys, ProcedureKeys, DrugKeys } from "../../MG_PER_ML";
-import ANIMALS, { WEIGHT_SLIDERS } from "../../MG_PER_ML";
+import type { AnimalKeys, ProcedureKeys, DrugKeys } from "../../business/SSOT";
+import SSOT, { WEIGHT_SLIDERS } from "../../business/SSOT";
 import capitalise from "../../util/capitalise";
 import calcDose from "../../business/calcDose";
 
 export const getStaticPaths = (async () => {
   const paths = [];
 
-  for (const animal of Object.keys(ANIMALS)) {
-    for (const procedure of Object.keys(ANIMALS[animal as AnimalKeys])) {
+  for (const animal of Object.keys(SSOT)) {
+    for (const procedure of Object.keys(SSOT[animal as AnimalKeys])) {
       paths.push({ params: { animal, procedure } });
     }
   }
@@ -38,7 +38,7 @@ export default function DrugCalc() {
   function genDoses() {
     if (!animal || !procedure) return;
 
-    const DRUGS = ANIMALS[animal][procedure];
+    const DRUGS = SSOT[animal][procedure];
     const arr = [];
     for (const [name, detail] of Object.entries(DRUGS)) {
       const twoDoses = detail.mgPerKg.low !== detail.mgPerKg.high;

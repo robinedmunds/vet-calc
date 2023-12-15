@@ -2,14 +2,14 @@ import type { GetStaticProps, GetStaticPaths } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Layout from "./layout";
-import type { AnimalKeys, Procedures } from "../MG_PER_ML";
-import ANIMALS from "../MG_PER_ML";
+import type { AnimalKeys, Procedures } from "../business/SSOT";
+import SSOT from "../business/SSOT";
 import capitalise from "../util/capitalise";
 
 export const getStaticPaths = (async () => {
   const paths = [];
 
-  for (const animal of Object.keys(ANIMALS)) {
+  for (const animal of Object.keys(SSOT)) {
     paths.push({ params: { animal } });
   }
 
@@ -31,7 +31,7 @@ export default function ProcedureSelect() {
     if (!animal) return;
 
     const arr = [];
-    const procedures: Procedures = ANIMALS[animal];
+    const procedures: Procedures = SSOT[animal];
 
     for (const procedure of Object.keys(procedures)) {
       arr.push(

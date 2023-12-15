@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import SOURCE from "../../MG_PER_ML";
+import SSOT from "../../business/SSOT";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  res.status(200).json(SOURCE);
+  res.status(200).json(SSOT);
 }

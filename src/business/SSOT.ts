@@ -1,3 +1,6 @@
+// Single source of truth
+// https://en.wikipedia.org/wiki/Single_source_of_truth
+
 export const ANIMALS = ["cat", "dog", "rabbit"] as const;
 export const PROCEDURES = ["castration", "spay", "dental"] as const;
 export const DRUGS = [
