@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
-import Layout from "../layout";
+import Layout from "../_layout";
 import type { AnimalKeys, ProcedureKeys, DrugKeys } from "../../business/SSOT";
 import SSOT, { WEIGHT_SLIDERS } from "../../business/SSOT";
 import capitalise from "../../util/capitalise";

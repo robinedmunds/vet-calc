@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { hasCookie, setCookie } from "cookies-next";
-import Layout from "./layout";
+import Layout from "./_layout";
 import SSOT from "../business/SSOT";
 import capitalise from "../util/capitalise";
 
