@@ -1,6 +1,9 @@
 import Head from "next/head";
 import Link from "next/link";
 
+const brand = "Hayley's Veterinary Drug Calculator";
+export const title = brand;
+
 export default function DashboardLayout({
   children,
 }: {
@@ -11,7 +14,7 @@ export default function DashboardLayout({
   return (
     <>
       <Head>
-        <title>Hayley's Veterinary Drug Calculator</title>
+        <title>{title}</title>
         <meta
           name="description"
           content="Hayley's Veterinary Drug Calculator"
@@ -23,7 +26,7 @@ export default function DashboardLayout({
         <div className="navbar bg-secondary text-primary-content justify-between rounded-2xl">
           <Link href="/">
             <button className="btn btn-ghost flex-1 text-xl">
-              <h1 className="">Hayley's Veterinary Drug Calculator</h1>
+              <h1 className="">{brand}</h1>
             </button>
           </Link>
           <div className="hidden flex-none">

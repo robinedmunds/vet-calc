@@ -1,7 +1,8 @@
-import type { GetStaticProps, GetStaticPaths } from "next";
+import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Layout from "./_layout";
+import type { GetStaticProps, GetStaticPaths } from "next";
+import Layout, { title } from "./_layout";
 import type { AnimalKeys, Procedures } from "../business/SSOT";
 import SSOT from "../business/SSOT";
 import capitalise from "../util/capitalise";
@@ -54,6 +55,10 @@ export default function ProcedureSelect() {
 
   return (
     <Layout>
+      <Head>
+        <title>{capitalise(animal).concat(" 💉 ", title)}</title>
+      </Head>
+
       <main className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         <h2 className="text-3xl">Pick a procedure</h2>
         <div className="flex flex-wrap justify-around gap-12">{genBtns()}</div>

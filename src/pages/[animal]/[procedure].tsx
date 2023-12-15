@@ -1,12 +1,12 @@
 import { useState } from "react";
-import type { GetStaticProps, GetStaticPaths } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Layout from "../_layout";
+import type { GetStaticProps, GetStaticPaths } from "next";
+import Layout, { title } from "../_layout";
 import type { AnimalKeys, ProcedureKeys, DrugKeys } from "../../business/SSOT";
 import SSOT, { WEIGHT_SLIDERS } from "../../business/SSOT";
-import capitalise from "../../util/capitalise";
 import calcDose from "../../business/calcDose";
+import capitalise from "../../util/capitalise";
 
 export const getStaticPaths = (async () => {
   const paths = [];
@@ -185,9 +185,15 @@ export default function DrugCalc() {
 
   return (
     <Layout>
+      <Head>
+        <title>
+          {capitalise(animal).concat(" ", procedure, " 💉 ", title)}
+        </title>
+      </Head>
+
       <main className="container flex flex-col items-center gap-12 px-4 py-16">
         <h2 className="text-3xl">
-          {capitalise(animal)} {procedure}
+          {capitalise(animal).concat(" ", procedure)}
         </h2>
         <div className="text-9xl">
           {weightKg}
