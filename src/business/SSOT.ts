@@ -87,9 +87,9 @@ export const WEIGHT_SLIDERS = {
       labelGap: 4,
     },
     g: {
-      max: 900,
-      multiplier: 100,
-      labelGap: 9,
+      max: 990,
+      multiplier: 10,
+      labelGap: 6,
     },
   },
   dog: {
@@ -99,9 +99,9 @@ export const WEIGHT_SLIDERS = {
       labelGap: 4,
     },
     g: {
-      max: 900,
-      multiplier: 100,
-      labelGap: 9,
+      max: 990,
+      multiplier: 10,
+      labelGap: 6,
     },
   },
   rabbit: {
