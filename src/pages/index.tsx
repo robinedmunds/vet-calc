@@ -10,12 +10,18 @@ export default function Home() {
       const elem = document.getElementById(
         "experimental-modal",
       ) as HTMLDialogElement;
-      elem.showModal();
+
+      if (elem) {
+        elem.showModal();
+      }
     }
   }
 
   function warningAccept() {
-    setCookie("experimental", "accepted", { maxAge: 1209600 });
+    setCookie("experimental", "accepted", {
+      maxAge: 1209600,
+      sameSite: "strict",
+    });
   }
 
   function genBtns() {
