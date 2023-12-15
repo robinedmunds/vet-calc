@@ -20,12 +20,29 @@ export default function DashboardLayout({
       </Head>
 
       <div className="container mx-auto p-2">
-        <div className="navbar bg-secondary text-primary-content rounded-3xl">
+        <div className="navbar bg-secondary text-primary-content justify-between rounded-2xl">
           <Link href="/">
-            <button className="btn btn-ghost text-xl">
+            <button className="btn btn-ghost flex-1 text-xl">
               <h1 className="">Hayley's Veterinary Drug Calculator</h1>
             </button>
           </Link>
+          <div className="hidden flex-none">
+            <button className="btn btn-square btn-ghost">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                className="inline-block h-5 w-5 stroke-current"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                ></path>
+              </svg>
+            </button>
+          </div>
         </div>
 
         {children}
