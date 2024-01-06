@@ -2,7 +2,7 @@
 
 FROM --platform=linux/amd64 node:lts-alpine AS deps
 
-RUN apk add --no-cache libc6-compat openssl1.1-compat
+RUN apk add --no-cache libc6-compat openssl
 
 WORKDIR /app
 
